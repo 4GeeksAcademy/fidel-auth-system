@@ -33,6 +33,10 @@ def create_user():
     email = request_data.get("email")
     password = request_data.get("password")
 
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
+        return jsonify({ "message": "Email already in use" }), 400
+
     new_user = User(email=email, password=password, is_active=True)
 
     db.session.add(new_user)
